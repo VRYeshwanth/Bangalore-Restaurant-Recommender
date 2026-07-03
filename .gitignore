@@ -59,3 +59,5 @@ Thumbs.db
 .coverage
 htmlcov/
 .pytest_cache/
+
+datasets/zomato_data_raw.csv
