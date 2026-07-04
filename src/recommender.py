@@ -34,6 +34,8 @@ def recommend_restaurants(df, location, listed_type, restaurant_type, cuisines, 
 
     similarities = cosine_similarity(user_vector, restaurant_vectors).flatten()
 
+    similarities = [round(similar*100, 2) for similar in similarities]
+
     results = df.copy()
     results['Similarity'] = similarities
     results = results.sort_values(by='Similarity', ascending=False)
