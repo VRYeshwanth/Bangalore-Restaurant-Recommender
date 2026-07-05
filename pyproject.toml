@@ -1,7 +1,7 @@
 [project]
 name = "bangalore-restaurant-recommender"
-version = "0.1.0"
-description = "Add your description here"
+version = "1.0.0"
+description = "A content-based restaurant recommendation system using TF-IDF and cosine similarity."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
