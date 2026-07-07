@@ -5,11 +5,15 @@ MULTIVALUE_FEATURES = [
     'Cuisines'
 ]
 
+def normalize_token(text):
+    return text.strip().lower().replace(" ", "_")
+
+
 def clean_text(text):
     if pd.isna(text):
         return ""
 
-    return str(text).strip().lower()
+    return normalize_token(str(text))
 
 
 def split_multivalue_features(text):
@@ -17,7 +21,7 @@ def split_multivalue_features(text):
         return []
     
     return [
-        item.strip().lower()
+        normalize_token(item)
         for item in str(text).split(',')
         if item.strip()
     ]

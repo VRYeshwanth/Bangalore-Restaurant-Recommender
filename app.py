@@ -70,12 +70,21 @@ if st.sidebar.button("Recommend Restaurants"):
         cuisines=selected_cuisines,
         vectorizer=vectorizer,
         restaurant_vectors=restaurant_vectors,
-        top_k=10
     )
 
-    recommendations['Similarity'] = recommendations['Similarity'].apply(lambda x: f"{x:.2f}%")
+    display_df = recommendations.copy()
+
+    display_df["Name"] = display_df["Name"].str.replace("_", " ")
+    display_df["Location"] = display_df["Location"].str.replace("_", " ")
+    display_df["Restaurant_Type"] = display_df["Restaurant_Type"].apply(
+        lambda x: [item.replace("_", " ") for item in x]
+    )
+    display_df["Cuisines"] = display_df["Cuisines"].apply(
+        lambda x: [item.replace("_", " ") for item in x]
+    )
+    display_df['Final Score'] = display_df['Final Score'].apply(lambda x: f"{x*100:.2f}%")
 
     st.dataframe(
-        recommendations[['Name', 'Location', 'Restaurant_Type', 'Cuisines', 'Listed_Type', 'Similarity']],
+        display_df[['Name', 'Location', 'Restaurant_Type', 'Cuisines', 'Listed_Type', 'Final Score']],
         width="stretch"
     )
