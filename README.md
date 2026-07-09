@@ -13,6 +13,9 @@ Built with **Python**, **Scikit-learn**, **Pandas**, and **Streamlit**.
 - Cosine Similarity for finding similar restaurants
 - Interactive Streamlit interface
 - Support for multiple cuisines and restaurant types
+- Feature Aware Tokenization
+- Preserving multi-word features during vectorization
+- Improved recommendation ranking using restaurant ratings and votes
 
 ---
 
@@ -45,6 +48,7 @@ Bangalore-Restaurant-Recommender/
 
 - Python 3.12
 - Pandas
+- NumPy
 - Scikit-learn
 - Streamlit
 
@@ -52,7 +56,7 @@ Bangalore-Restaurant-Recommender/
 
 ## 🧹 Data Preprocessing
 
-The original Zomato Bangalore dataset was cleaned before building the recommendation system. The preprocessing steps include removing unnecessary columns, removing duplicate records, removing rows with missing values, cleaning text fields and converting multi-valued features into lists
+The original Zomato Bangalore dataset was cleaned by removing unnecessary columns, duplicate records, and rows with missing values. Text fields were normalized, and multi-valued features such as cuisines and restaurant types were split into lists for further processing.
 
 The final dataset contains the following features:
 
@@ -81,7 +85,11 @@ Each restaurant is converted into a text document by combining:
 Example:
 
 ```
-whitefield buffet casual dining north indian chinese
+location_whitefield
+listed_buffet
+type_casual_dining
+cuisine_north_indian
+cuisine_chinese
 ```
 
 These documents are then transformed into TF-IDF vectors.
@@ -96,13 +104,19 @@ These documents are then transformed into TF-IDF vectors.
     - Restaurant Type(s)
     - Listed Type
 
-2. User preferences are converted into a text document.
+2. User preferences are converted into a feature-aware document using prefixed tokens (e.g., location_whitefield, cuisine_north_indian).
 
-3. The document is transformed using the trained TF-IDF vectorizer.
+3. The document is transformed into a TF-IDF vector.
 
-4. Cosine Similarity is computed between the user's preference vector and every restaurant.
+4. Cosine similarity is computed between the user's preference vector and every restaurant.
 
-5. The restaurants with the highest similarity scores are returned.
+5. Restaurants are re-ranked using a weighted combination of similarity score, normalized rating, and normalized vote count.
+
+```text
+Final Score = 70% × Similarity Score
+            + 20% × Normalized Rating
+            + 10% × Normalized Vote Count
+```
 
 ---
 
